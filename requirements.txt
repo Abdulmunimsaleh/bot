@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+python-dotenv
+google-generativeai
+selenium
+webdriver-manager
+langchain
+langchain-community
+langchain-core
+sentence-transformers
+faiss-cpu
