@@ -1,7 +1,6 @@
 import os
 import time
 import google.generativeai as genai
-from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from selenium import webdriver
@@ -16,14 +15,10 @@ from langchain_core.documents import Document
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 
-# Load API Key
-load_dotenv()
-gemini_api_key = os.getenv("GEMINI_API_KEY")
+# Hardcoded API Key (Replace 'your-api-key-here' with the actual key)
+GEMINI_API_KEY = "AIzaSyCpugWq859UTT5vaOe01EuONzFweYT2uUY"
 
-if not gemini_api_key:
-    raise ValueError("Gemini API Key is missing. Please set it in the .env file.")
-
-genai.configure(api_key=gemini_api_key)
+genai.configure(api_key=GEMINI_API_KEY)
 
 # FastAPI App Initialization
 app = FastAPI(title="Tripzoori AI Assistant API", description="API for answering questions about Tripzoori", version="1.0")
@@ -33,9 +28,8 @@ TRIPZOORI_URL = "https://tripzoori-gittest1.fly.dev/"
 
 # Function to Load and Process Website Content with Selenium
 def load_website_content(url):
-    # Setup Selenium WebDriver
     chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Run in headless mode (no GUI)
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
@@ -47,7 +41,7 @@ def load_website_content(url):
         driver.get(url)
         time.sleep(5)  # Wait for JavaScript to load content
 
-        content = driver.page_source  # Get fully rendered HTML
+        content = driver.page_source
         driver.quit()
 
         document = Document(page_content=content, metadata={"source": url})
